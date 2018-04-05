@@ -1,0 +1,125 @@
+
+<style>
+    #app #vongquay {
+        position: relative;
+        z-index: -1;
+    }
+    #app #kimquay {
+        width:  174px;
+        height: 228px;
+        position: absolute;
+        top : 130px;
+        left: 140px;
+    }
+    #app #anh_minh_hoa{
+        z-index:  -5;
+    }
+    .quay-enter-active {
+        animation: spin 2s linear infinite;
+        
+    }
+   
+    @keyframes spin { 100% { -webkit-transform: rotate(360deg); transform:rotate(360deg); } }
+</style>
+<div id="app">
+    <div v-on:click="startQuay()" v-if="trang_thai ==  'Đang Quay'"> 
+            <button disabled> {{ trang_thai }} </button> 
+    </div>
+    
+    <Div v-on:click="startQuay()"  v-if="trang_thai ==  'Quay'">
+        <button> {{ trang_thai }} </button> 
+    </Div>
+    <Div v-on:click="startQuay()"  v-if="trang_thai ==  'Reset'">
+            <button> {{ trang_thai }} </button> 
+        </Div>
+     <div  v-if="actionXoay" >
+        <transition name="quay" v-on:enter="Enter" v-on:after-enter="afterEnter" appear>
+            <div id="kimquay">
+                
+                <img src="assets/pointer.png" >
+                
+            </div>
+        </transition>
+        </div>
+        <div  v-else  id="kimquay">
+                <img src="assets/pointer.png" >
+        </div> 
+    
+  
+     <div id="vongquay">
+        <img src="assets/turntable.png">
+    </div> 
+    <p > Giai thuong la : <span v-html="gift"></p>
+    <p > So luot quay : {{ countQuay }}</p>
+</div>
+
+
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue"></script> 
+<script type="text/javascript">
+    var app = new Vue({
+        el : "#app",
+        data : {
+            trang_thai  : "Quay",
+            on : true,
+            actionXoay : false,
+            time : "1.0s",
+           
+            result : [
+                { id : 1 , content : "Tạch rồi" , timeout : 3000 },
+                { id : 2 , content : "5 bộp IKHIN . Liên hệ <a href='https://www.facebook.com/lengoc.anh.560'>https://www.facebook.com/lengoc.anh.560</a> để nhận nhé" , timeout : 1500 },
+                { id : 3 , content : "Chi phí nhà nghỉ. Liên hệ <a href='https://www.facebook.com/lengoc.anh.560'>https://www.facebook.com/lengoc.anh.560</a> để nhận nhé" , timeout : 1350 },
+                { id : 4 , content : "Tạch rồi" , timeout : 2000 }
+
+            ],
+            gift : "",
+            rand : 0,
+            countQuay : 3
+
+        },
+        methods : {
+            Enter : function(el , done){
+                this.trang_thai = "Đang quay";
+                el.style.animationName = "spin";
+                el.style.animationDuration = this.time ;
+                el.style.animationIterationCount = "infinite";
+                el.style.animationTimingFunction = "linear";
+                setTimeout(() => {
+                    
+                    el.style.animationPlayState = "paused";
+                    this.trang_thai = "Reset";
+                },this.result[this.rand].timeout);
+                
+                done();
+                
+                
+            },
+            afterEnter : function(el){
+                  this.checkGiaiThuong();
+                  this.countQuay--;
+                  //this.trang_thai = "Quay";
+            },
+            startQuay(){
+                this.actionXoay = !this.actionXoay;
+                this.rand = Math.floor(Math.random() * this.result.length);
+                this.trang_thai = "Quay";
+               // console.log(this.rand);
+            
+            },
+            checkGiaiThuong : function() {
+                
+                setTimeout( () => {
+                   this.gift = this.result[this.rand].content; 
+                } , this.result[this.rand].timeout);
+            }
+        
+           
+        },
+        watch : {
+            countQuay : function(value){
+                if (value < 0){
+                    alert("Het luot roi");
+                }
+            }
+        }
+    });
+</script>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+   
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div id="app">
+    <section class="row">
+        <div class="small-6 columns">
+            <h1 class="text-center">YOU</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" v-bind:style="{ width :  widthMe + '%' }">   
+                        {{ widthMe }}
+                </div>
+            </div>
+        </div>
+        <div class="small-6 columns">
+            <h1 class="text-center">MONSTER</h1>
+            <div class="healthbar">
+                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" v-bind:style="{ width :widthMonter+ '%'}">
+                    {{widthMonter}}
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="row controls" v-if="!gameIsRunning">
+        <div class="small-12 columns">
+            <button id="start-game" v-on:click="newGame()">START NEW GAME</button>
+        </div>
+    </section>
+    <section class="row controls" v-else>
+        <div class="small-12 columns">
+            <button id="attack" v-on:click="attack()">ATTACK</button>
+            <button id="special-attack">SPECIAL ATTACK</button>
+            <button id="heal" v-on:click="heal()">HEAL</button>
+            <button id="give-up">GIVE UP</button>
+        </div>
+    </section>
+    <section class="row log" v-if="ketQua.length > 0">
+        <div class="small-12 columns">
+            <ul >
+                <li v-for="kq of ketQua">
+                    Damage cua toi : {{kq.me}}  Dame cua quai {{kq.monter}}
+                </li>
+            </ul>
+        </div>
+    </section>
+</div>
+</body>
+</html>
+<script type="text/javascript" src="app.js"></script>
